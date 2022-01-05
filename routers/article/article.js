@@ -94,15 +94,15 @@ router.put('/update_article/:id',(req, res) =>{
     Article.findOneAndUpdate({'_id':req.params.id}, article_update)
     .then((article) => {
         if(article){
-            var message = { message: "Article sucessfully updated" };
+            var message = { success: "Article sucessfully updated" };
             res.json(message);
         }else{
-            var message = { message: "Article not found" };
+            var message = { error: "Article not found" };
             res.json(message);
         }
     }).catch(err => {
         console.log(err);
-        var message = {message:"Something went wrong!", success: false, err: err };
+        var message = {error:"Something went wrong!", success: false, err: err };
         res.json(message);
     })
 });
