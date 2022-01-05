@@ -20,6 +20,7 @@ app.get("/",(req, res)=>{
 });
 
 const user = require('./routers/user/user');
+const admin = require('./routers/admin/admin');
 const article = require('./routers/article/article');
 const category = require('./routers/category-subject/category');
 const subject = require('./routers/category-subject/subject');
@@ -28,6 +29,7 @@ const like = require('./routers/like/like');
 const feedback = require('./routers/feedback/feedback');
 
 app.use('/', user);
+app.use('/', admin);
 app.use('/', article);
 app.use('/', category);
 app.use('/', subject);

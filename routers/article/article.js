@@ -1,46 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const Article = require('../../models/article/article');
-// const multer  = require('multer')
-
-// const storageEngine = multer.diskStorage ({
-//     destination: './public/course/',
-//     filename: function (req, file, callback) {
-//         callback (
-//             null,
-//             file.fieldname + '-' + Date.now () + path.extname (file.originalname)
-//         );
-//     },
-// });
-
-// const fileFilter = (req, file, callback) => {
-//     let pattern = /pdf/; // reqex
-  
-//     if (pattern.test (path.extname (file.originalname))) {
-//         callback (null, true);
-//     } else {
-//         callback ('Error: not a valid file');
-//     }
-// };
-
-// const upload = multer ({
-//     storage: storageEngine,
-//     fileFilter  
-// });
-
-// router.post ('/upload', upload.single ('uploadedFile'), (req, res) => {
-//     console.log(req.file);
-//     // res.json (req.file).status (200);
-//     res.send("ok");
-// });
 
 router.post('/articlepublish', async (req, res)=>{
-    const userId= req.body.userId;
-    const category= req.body.category;
-    const subject= req.body.subject;
-    const title= req.body.title;
-    const content= req.body.content;
-    var newArticle = new Article({userId,category,subject,title,content})
+    const userId = req.body.userId;
+    const name = req.body.name;
+    const category = req.body.category;
+    const subject = req.body.subject;
+    const title = req.body.title;
+    const content = req.body.content;
+    var newArticle = new Article({userId,name,category,subject,title,content})
     newArticle.save()
     .then(article => {
         var message={
@@ -98,6 +67,64 @@ router.get('/retrive_article_by_subject/:subject',(req, res)=>{
             res.json(article);
         }
     });
+});
+
+router.get('/delete_article/:id',(req, res) =>{ 
+    Article.findOneAndRemove({'_id':req.params.id})
+    .then((article) => {
+        if(article){
+            var message = { success: "Article sucessfully deleted" };
+            res.json(message);
+        }else{
+            var message = { error: "Article not found" };
+            res.json(message);
+        }
+    }).catch(err => {
+        console.log(err);
+        var message = { success: false, err: err };
+        res.json(message);
+    })
+});
+
+router.put('/update_article/:id',(req, res) =>{
+    var article_update = {
+        title: req.body.title,
+        content: req.body.content,
+    }
+    Article.findOneAndUpdate({'_id':req.params.id}, article_update)
+    .then((article) => {
+        if(article){
+            var message = { message: "Article sucessfully updated" };
+            res.json(message);
+        }else{
+            var message = { message: "Article not found" };
+            res.json(message);
+        }
+    }).catch(err => {
+        console.log(err);
+        var message = {message:"Something went wrong!", success: false, err: err };
+        res.json(message);
+    })
+});
+
+router.put('/update_article_status/:id',(req, res) =>{
+    var article_update = {
+        status: req.body.status,
+    }
+    Article.findOneAndUpdate({'_id':req.params.id}, article_update)
+    .then((article) => {
+        if(article){
+            var message = { message: "Article Status sucessfully updated" };
+            res.json(message);
+        }else{
+            var message = { message: "Article not found" };
+            res.json(message);
+        }
+    }).catch(err => {
+        console.log(err);
+        var message = {message:"Something went wrong!", success: false, err: err };
+        res.json(message);
+    })
 });
 
 module.exports = router;

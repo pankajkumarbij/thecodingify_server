@@ -5,6 +5,10 @@ const articleSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
     },
+    name: {
+        type: String,
+        required: true,
+    },
     category: {
         type: String,
         required: true,
@@ -20,6 +24,10 @@ const articleSchema = new mongoose.Schema({
     content: {
         type: String,
         required: true,
+    },
+    status: {
+        type: String,
+        default: "Pending",
     },
 });
 
