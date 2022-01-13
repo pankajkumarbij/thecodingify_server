@@ -7,21 +7,41 @@ const User = require('../../models/user/user');
 router.post('/register', async (req, res)=>{
     if(req.body.password==req.body.confirm_password){
         bcrypt.hash(req.body.password, 12, function(err, hash){
-            const name= req.body.name;
+            const fName= req.body.fName;
+            const lName= req.body.lName;
             const email= req.body.email;
+            const username= req.body.username;
             const password= hash;
-            var newUser = new User({name,email,password})
+            var newUser = new User({fName,lName,username,email,password})
             newUser.save()
             .then(user => {
-                var message={
-                    success:"successfully registered!"
-                };
+                var message={success:"successfully registered!",data:user};
                 res.json(message);
             })
             .catch(err => {
-                var message = {
-                    error:"Something went wrong!"
-                };
+                var message = {message:""};
+                if( err.code=="11000" && Object.keys(err.keyValue)[0] == "email"){
+                    message.message="email already exist!";
+                }
+                else if(Object.keys(err.errors)[0]=="email")
+                {
+                    message.message=err.errors.email.properties.message;
+                }
+                else if(Object.keys(err.errors)[0]=="fName")
+                {
+                    message.message=err.errors.fName.properties.message;
+                }
+                else if(Object.keys(err.errors)[0]=="password")
+                {
+                    message.message=err.errors.password.properties.message;
+                }
+                else if(Object.keys(err.errors)[0]=="username")
+                {
+                    message.message=err.errors.username.properties.message;
+                }
+                else{
+                    message.message="Something went wrong!";
+                }
                 res.json(message);
             })     
         });
