@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const bookmarkController = require('../../controller/bookmark/bookmark');
+const authenticateToken = require('../../middleware/user/user');
 
-router.post('/addbookmark', bookmarkController.AddBookmark);
+router.post('/addbookmark', authenticateToken, bookmarkController.AddBookmark);
 
-router.get('/retrive_bookmark/:userid', bookmarkController.RetrieveBookmarkByUserid);
+router.get('/retrive_bookmark/:userid', authenticateToken, bookmarkController.RetrieveBookmarkByUserid);
 
-router.get('/delete_bookmark/:userId/:subject', bookmarkController.DeleteBookmarkByUseridAndSubject);
+router.get('/delete_bookmark/:userId/:subject', authenticateToken, bookmarkController.DeleteBookmarkByUseridAndSubject);
 
 module.exports = router;

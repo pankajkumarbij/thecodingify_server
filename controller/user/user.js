@@ -1,11 +1,12 @@
 const bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
 const User = require('../../models/user/user');
+const jwtAuth = require('../../jwt/generate-token');
+// console.log(require('crypto').randomBytes(64).toString('hex'));
 
 var userController={
 
     Register(req, res){
-        if(req.body.password==req.body.confirm_password){
+        if(req.body.password!="" && req.body.password==req.body.confirm_password){
             bcrypt.hash(req.body.password, 12, function(err, hash){
                 const fName= req.body.fName;
                 const lName= req.body.lName;
@@ -19,17 +20,17 @@ var userController={
                     res.json(message);
                 })
                 .catch(err => {
-                    var message = {message:""};
+                    var message = {error:""};
                     if( err.code=="11000" && Object.keys(err.keyValue)[0] == "email"){
-                        message.message="email already exist!";
+                        message.error="email already exist!";
                     }
                     else if(Object.keys(err.errors)[0]=="email")
                     {
-                        message.message=err.errors.email.properties.message;
+                        message.error=err.errors.email.properties.message;
                     }
                     else if(Object.keys(err.errors)[0]=="fName")
                     {
-                        message.message=err.errors.fName.properties.message;
+                        message.error=err.errors.fName.properties.message;
                     }
                     else if(Object.keys(err.errors)[0]=="password")
                     {
@@ -37,10 +38,10 @@ var userController={
                     }
                     else if(Object.keys(err.errors)[0]=="username")
                     {
-                        message.message=err.errors.username.properties.message;
+                        message.error=err.errors.username.properties.message;
                     }
                     else{
-                        message.message="Something went wrong!";
+                        message.error="Something went wrong!";
                     }
                     res.json(message);
                 })     
@@ -62,17 +63,13 @@ var userController={
             else if(!user){
                 var message = { error: "user not found with this email"}
                 res.json(message);
-    
             }
             else {
                 bcrypt.compare(req.body.password, user.password, function(err, result) {
                     if(result){
-                        var token = jwt.sign({ email: user.email }, 'asthara-agro');
+                        var token = jwtAuth.generateAccessToken(user.email, user.fName, user.lName, user.username);
                         var output = { 
-                            token:token, 
-                            name:user.name, 
-                            email:user.email, 
-                            id:user._id, 
+                            token:token,
                             message: { success: "Successfully Login" }
                         }
                         res.json(output);
