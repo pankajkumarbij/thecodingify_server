@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
+const jwtAuth = require('../../jwt/generate-token');
 const Admin = require('../../models/admin/admin');
 
 const adminController={
@@ -47,12 +47,9 @@ const adminController={
             else {
                 bcrypt.compare(req.body.password, user.password, function(err, result) {
                     if(result){
-                        var token = jwt.sign({ email: user.email }, 'asthara-agro');
+                        var token = jwtAuth.generateAccessToken(user.email, user.fName, user.lName, user.username, user._id);
                         var output = { 
-                            token:token, 
-                            name:user.name, 
-                            email:user.email, 
-                            id:user._id, 
+                            token:token,
                             message: { success: "Admin Successfully Login" }
                         }
                         res.json(output);
