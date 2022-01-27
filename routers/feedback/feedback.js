@@ -5,9 +5,9 @@ const authenticateToken = require('../../middleware/user/user');
 
 router.post('/addfeedback', authenticateToken, feedbackController.AddFeedback);
 
-router.get('/retrive_feedback/:userid/:subject', authenticateToken, feedbackController.RetrieveFeedbackByUseridAndSubject);
+router.get('/retrieve_feedback/:userid/:subject', feedbackController.RetrieveFeedbackByUseridAndSubject);
 
-router.get('/retrive_feedback_by_subject', authenticateToken, feedbackController.RetrieveFeedbackBySubject);
+router.get('/retrieve_feedback_by_subject', feedbackController.RetrieveFeedbackBySubject);
 
 router.get('/delete_feedback/:userId/:subject', authenticateToken, feedbackController.DeleteFeedbackByUseridAndSubject);
 

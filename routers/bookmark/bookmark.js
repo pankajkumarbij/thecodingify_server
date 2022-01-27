@@ -5,7 +5,7 @@ const authenticateToken = require('../../middleware/user/user');
 
 router.post('/addbookmark', authenticateToken, bookmarkController.AddBookmark);
 
-router.get('/retrive_bookmark/:userid', authenticateToken, bookmarkController.RetrieveBookmarkByUserid);
+router.get('/retrieve_bookmark/:userid', authenticateToken, bookmarkController.RetrieveBookmarkByUserid);
 
 router.get('/delete_bookmark/:userId/:subject', authenticateToken, bookmarkController.DeleteBookmarkByUseridAndSubject);
 

@@ -5,6 +5,6 @@ const authenticateToken = require('../../middleware/user/user');
 
 router.post('/addcategory', authenticateToken, categoryController.AddCategory);
 
-router.get('/retrive_all_categories', authenticateToken, categoryController.RetrieveAllCategories);
+router.get('/retrieve_all_categories', categoryController.RetrieveAllCategories);
 
 module.exports = router;

@@ -5,13 +5,13 @@ const authenticateToken = require('../../middleware/user/user');
 
 router.post('/articlepublish', authenticateToken, articleController.ArticlePublish);
 
-router.get('/retrive_all_articles', authenticateToken, articleController.RetrieveAllArticles);
+router.get('/retrieve_all_articles', articleController.RetrieveAllArticles);
 
-router.get('/retrive_article/:id', authenticateToken, articleController.RetrieveArticleById);
+router.get('/retrieve_article/:id', articleController.RetrieveArticleById);
 
-router.get('/retrive_article_by_userId/:userId', authenticateToken, articleController.RetrieveArticleByUserid);
+router.get('/retrieve_article_by_userId/:userId', articleController.RetrieveArticleByUserid);
 
-router.get('/retrive_article_by_subject/:subject', authenticateToken, articleController.RetrieveArticleBySubject);
+router.get('/retrieve_article_by_subject/:subject', articleController.RetrieveArticleBySubject);
 
 router.get('/delete_article/:id', authenticateToken, articleController.DeleteArticleById);
 
