@@ -16,7 +16,8 @@ const subjectController={
     })
     .catch(err => {
       var message = {
-        error:"Something went wrong!"
+        error:"Something went wrong!",
+        err:err,
       };
       res.json(message);
     })
